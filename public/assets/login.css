@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  background-image: url(../img/wallpaper.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 16px;
+}
+
+
+body div.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body div.login-form form {
+  display: flex;
+  width: 342px;
+  flex-direction: column;
+  gap: 32px;
+}
+
+body div.login-form form div:not(:last-child) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body div.login-form form label {
+  display: block;
+  font-weight: 500;
+}
+
+body div.login-form form input {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+}
+
+
+body div.login-form form div:last-of-type {
+  display: flex;
+  margin-top: 8px;
+  gap: 12px;
+}
+
+body div.login-form form div:last-of-type button {
+  cursor: pointer;
+  font-size: 1em;
+  color: #000000;
+  padding: 14px;
+  width: 100%;
+  backface-visibility: hidden;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+body div.login-form form div:last-of-type button:hover {
+  background-color: hsl(0, 100%, 24%);
+  border-color: hsl(0, 100%, 30%);
+  color: hsl(0, 0%, 98%);
+}
+
+body div.login-form form div:last-of-type button:active {
+  background-color: hsl(0, 100%, 20%);
+  border-color: hsl(0, 100%, 28%);
+  color: hsl(0, 0%, 94%);
+}
+
+body div.login-form a {
+  font-size: 16px;
+  line-height: 20px;
+  padding: 8px 12px;
+  margin-top: 32px;
+}
+
+#btCancelar {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+#btCancelar:hover {
+  background-color: #7a0000;
+  border-color: #990000;
+  color: #fafafa;
+}
+
+#btCancelar:active {
+  background-color: #660000;
+  border-color: #8f0000;
+  color: #f0f0f0;
+}

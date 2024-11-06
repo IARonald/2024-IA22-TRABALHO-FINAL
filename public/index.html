@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprendendo a Utilizar o JWT</title>
+  <link rel="stylesheet" href="assets/login.css">
+</head>
+
+<body>
+  <div class="login-form">
+    <form>
+      <div>
+        <label>Email</label>
+        <input type="text" name="email" placeholder="Digite seu email">
+      </div>
+      <div>
+        <label>Senha</label>
+        <input type="password" name="password" placeholder="Digite sua senha">
+      </div>
+      <div>
+        <!-- <button type="submit" class="unelevated" id="recSenha">recuperar senha</button> -->
+        <button type="submit">Entrar</button>
+      </div>
+    </form>
+    <a href="/registrar.html">Registre-se!</a>
+  </div>
+  <script>
+    const form = document.querySelector('form')
+
+    const verifyMail = (email) => {
+      const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+      return regex.test(email)
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      if (form.email.value.trim() === '' || form.password.value.trim() === '')
+        return alert('Preencha todos os campos')
+
+      if (!verifyMail(form.email.value))
+        return alert('Email inválido')
+
+      const url = '/user/login'
+      const method = 'POST'
+      const headers = { 'Content-Type': 'application/json' }
+      const body = JSON.stringify({
+        email: form.email.value,
+        password: form.password.value
+      })
+
+      const response = await fetch(url, { method, headers, body })
+      const dataResponse = await response.json()
+
+      if (!response.ok) {
+        console.log(response)
+        console.log(dataResponse)
+        alert('Erro ao logar o usuário')
+        return
+      }
+
+      localStorage.setItem('token', dataResponse.token)
+      alert('Você foi logado 👍')
+      window.location.href = 'acesso-privado.html'
+    })
+
+    // form.recSenha.addEventListener('click', (e) => e.preventDefault())
+  </script>
+</body>
+
+</html>

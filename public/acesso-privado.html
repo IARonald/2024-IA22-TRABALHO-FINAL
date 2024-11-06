@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privado</title>
+  <link rel="stylesheet" href="assets/privado.css">
+</head>
+
+<body>
+  <h1>Apenas usuários logados podem acessar esta página</h1>
+  <button id="logout">Sair</button>
+  <button id="btn">Carregar lista</button>
+  <!-- <button id="auto-kill">Se deletar</button> -->
+  <div id="container">
+    <!-- usuarios -->
+  </div>
+  <script>
+    const container = document.getElementById('container')
+    async function load() {
+      const url = '/user/list'
+      const headers = { 'Authorization': `${localStorage.getItem('token')}` }
+      const response = await fetch(url, { method: 'GET', headers })
+      if (!response.ok) {
+        alert('Vc n esta logado... Redirecionando para o login...')
+        return window.location = '/'
+      }
+      const dataResponse = await response.json()
+      container.innerHTML = ''
+      dataResponse.forEach(e => {
+        const el = document.createElement('p')
+        el.innerText = `ID: ${e.id}, Nome: ${e.name}, Email: ${e.email}`
+        container.appendChild(el)
+      })
+    }
+
+    document.getElementById('btn').addEventListener('click', load)
+
+    const logoutBtn = document.getElementById('logout')
+    logoutBtn.addEventListener('click', () => {
+      localStorage.clear()
+      window.location = '/acesso-publico.html'
+    })
+
+    // const autoDelete = document.getElementById('auto-kill')
+    // autoDelete.addEventListener('click', () => {
+    //   const url = '/user/delete'
+    // })
+  </script>
+</body>
+
+</html>
