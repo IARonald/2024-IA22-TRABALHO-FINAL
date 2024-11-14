@@ -7,7 +7,7 @@
 
 body {
 	text-align: center;
-	background-color: #000;
+	background-color: #ddcdcd;
 	color: #ebebeb;
 }
 
@@ -45,3 +45,7 @@ body {
 .header nav a:hover {
 	background-color: #2c5252;
 }
+ .welcome{
+	color:aquamarine;
+
+ }

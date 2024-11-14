@@ -3,13 +3,16 @@
   margin: 0;
   padding: 0;
 }
-
+.welcome{
+	color: #ffffff;
+  left: 30px;
+}
 body {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000000;
+  background-color: #585656;
 
   background-size: cover;
   background-repeat: no-repeat;
@@ -30,6 +33,7 @@ body div.login-form form {
   width: 342px;
   flex-direction: column;
   gap: 32px;
+
 }
 
 body div.login-form form div:not(:last-child) {
@@ -117,7 +121,7 @@ body div.login-form form div:last-of-type button {
 }
 
 .body div.login-form form div:last-of-type button :hover {
-  color: #31202b;
+  color: #3d18c2;
   text-shadow: none;
 
 }
@@ -158,4 +162,8 @@ body div.login-form a {
   background-color: #660000;
   border-color: #8f0000;
   color: #f0f0f0;
+}
+
+.label{
+  color: #3d18c2;
 }

@@ -12,57 +12,124 @@
   <h1>Apenas usuários logados podem acessar esta página</h1>
   <button id="logout">Sair</button>
   <button id="btn">Carregar lista</button>
-  <button id = "update", onclick="modal.showModal()">Editar</button>
-
+  <button id="update" onclick="openEditForm()">Alterar</button>
   
-  <dialog id = "modal">
+  <!-- Novo botão "Adicionar Filme" -->
+  <button id="addMovieBtn" onclick="redirectToAddMoviePage()">Adicionar Filme</button>
+
+  <!-- Modal de edição -->
+  <dialog id="modal">
     <form method="dialog">
-      <p>oi</p>
-    
+      <h2>Editar Dados</h2>
+
+      <!-- Formulário de senha -->
+      <div id="passwordForm">
+        <label for="currentPassword">Senha Atual:</label>
+        <input type="password" id="currentPassword" name="currentPassword" placeholder="Digite sua senha atual" required><br><br>
+
+        <label for="newEmail">Novo Email:</label>
+        <input type="email" id="newEmail" name="newEmail" placeholder="Digite o novo email" required><br><br>
+
+        <label for="newPassword">Nova Senha:</label>
+        <input type="password" id="newPassword" name="newPassword" placeholder="Digite a nova senha" required><br><br>
+
+        <button type="button" onclick="validatePassword()">Confirmar</button>
+        <button type="button" onclick="cancelEdit()">Cancelar</button>
+      </div>
     </form>
   </dialog>
-  
 
-    
-  <dialog>
-    <p>Este é um modal</p>
-  </dialog>
-
-  <!-- <button id="auto-kill">Se deletar</button> -->
   <div id="container">
-    <!-- usuarios -->
+    <!-- usuários -->
   </div>
+
   <script>
-    const container = document.getElementById('container')
+    const container = document.getElementById('container');
+    
+    // Função para carregar a lista de usuários
     async function load() {
-      const url = '/user/list'
-      const headers = { 'Authorization': `${localStorage.getItem('token')}` }
-      const response = await fetch(url, { method: 'GET', headers })
+      const url = '/user/list';
+      const headers = { 'Authorization': `${localStorage.getItem('token')}` };
+      const response = await fetch(url, { method: 'GET', headers });
       if (!response.ok) {
-        alert('Vc n esta logado... Redirecionando para o login...')
-        return window.location = '/'
+        alert('Você não está logado... Redirecionando para o login...');
+        return window.location = '/';
       }
-      const dataResponse = await response.json()
-      container.innerHTML = ''
+      const dataResponse = await response.json();
+      container.innerHTML = '';
       dataResponse.forEach(e => {
-        const el = document.createElement('p')
-        el.innerText = `ID: ${e.id}, Nome: ${e.name}, Email: ${e.email}`
-        container.appendChild(el)
-      })
+        const el = document.createElement('p');
+        el.innerText = `ID: ${e.id}, Nome: ${e.name}, Email: ${e.email}`;
+        container.appendChild(el);
+      });
     }
 
-    document.getElementById('btn').addEventListener('click', load)
+    // Carregar a lista ao clicar no botão
+    document.getElementById('btn').addEventListener('click', load);
 
-    const logoutBtn = document.getElementById('logout')
+    // Função de logout
+    const logoutBtn = document.getElementById('logout');
     logoutBtn.addEventListener('click', () => {
-      localStorage.clear()
-      window.location = '/acesso-publico.html'
-    })
+      localStorage.clear();
+      window.location = '/acesso-publico.html';
+    });
 
-    // const autoDelete = document.getElementById('auto-kill')
-    // autoDelete.addEventListener('click', () => {
-    //   const url = '/user/delete'
-    // })
+    // Função para abrir o modal e permitir a edição
+    function openEditForm() {
+      const modal = document.getElementById('modal');
+      modal.showModal(); // Abre o modal
+    }
+
+    // Função para cancelar a edição e fechar o modal
+    function cancelEdit() {
+      const modal = document.getElementById('modal');
+      modal.close(); // Fecha o modal
+    }
+
+    // Função para validar a senha atual e permitir atualização dos dados
+    async function validatePassword() {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newEmail = document.getElementById('newEmail').value;
+      const newPassword = document.getElementById('newPassword').value;
+
+      const userEmail = 'joao.silva@email.com'; // Exemplo de email do usuário logado (deve vir da sessão ou JWT)
+
+      const response = await fetch('/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userEmail, password: currentPassword })
+      });
+
+      if (!response.ok) {
+        alert('Senha incorreta!');
+        return;
+      }
+
+      // Se a senha for válida, envia os dados de atualização para o backend
+      const userData = {
+        email: userEmail,
+        newEmail: newEmail,
+        password: newPassword
+      };
+
+      const updateResponse = await fetch('/user/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+
+      if (updateResponse.ok) {
+        alert('Dados atualizados com sucesso!');
+        cancelEdit();
+      } else {
+        alert('Erro ao atualizar os dados.');
+      }
+    }
+
+    // Função para redirecionar para a página de adicionar filme
+    function redirectToAddMoviePage() {
+      window.location.href = "/adicionar-filme.html"; // Coloque a URL da página de adicionar filme aqui
+    }
   </script>
 </body>
 
