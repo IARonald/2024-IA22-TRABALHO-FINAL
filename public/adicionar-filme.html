@@ -10,22 +10,22 @@
 
 <body>
   <h1>Adicionar Novo Filme</h1>
-  
+
   <!-- Formulário de Adicionar Filme -->
   <form id="addMovieForm">
     <div class="form-group">
       <label for="movieName">Nome do Filme:</label>
-      <input type="text" id="movieName" name="movieName" placeholder="Digite o nome do filme" required>
+      <input type="text" id="movieName" name="nomejogo" placeholder="Digite o nome do jogo" required>
     </div>
 
     <div class="form-group">
       <label for="genre">Gênero:</label>
-      <input type="text" id="genre" name="genre" placeholder="Digite o gênero do filme" required>
+      <input type="text" id="genre" name="gene" placeholder="Digite o gênero do jogo" required>
     </div>
 
     <div class="form-group">
       <label for="releaseYear">Ano de Lançamento:</label>
-      <input type="number" id="releaseYear" name="releaseYear" placeholder="Digite o ano de lançamento" required>
+      <input type="number" id="releaseYear" name="anolance" placeholder="Digite o ano de lançamento" required>
     </div>
 
     <div class="form-actions">
@@ -34,47 +34,51 @@
     </div>
   </form>
 
+  <!-- Link para voltar à página de acesso privado -->
+  <p><a href="acesso-privado.html">Voltar</a></p>
+
   <script>
-    // Função para enviar o filme ao backend
-    async function addMovie(event) {
-      event.preventDefault();
+    const form = document.querySelector('form')
 
-      const movieName = document.getElementById('movieName').value;
-      const genre = document.getElementById('genre').value;
-      const releaseYear = document.getElementById('releaseYear').value;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
 
-      const movieData = {
-        title: movieName,
-        genre: genre,
-        release_year: releaseYear
-      };
+      // Verificar se todos os campos estão preenchidos
+      if (form.nomejogo.value.trim() === '' ||
+        form.gene.value.trim() === '' ||
+        form.anolance.value.trim() === '') {
+        return alert('Preencha todos os campos') // Exibe o alerta caso algum campo esteja vazio
+      }
+
+      const url = '/user'; // Corrigido
+      const method = 'POST';
+      const headers = { 'Content-Type': 'application/json' };
+      const body = JSON.stringify({
+        nomejogo: form.nomejogo.value,
+        gene: form.gene.value,
+        anolance: form.anolance.value
+      });
 
       try {
-        const response = await fetch('/movie/add', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(movieData)
-        });
+        const response = await fetch(url, { method, headers, body });
 
-        if (response.ok) {
-          alert('Filme adicionado com sucesso!');
-          window.location.href = '/privado.html'; // Redireciona para a página privada
-        } else {
-          alert('Erro ao adicionar filme.');
+        console.log('Status da resposta:', response.status); // Adicionado para debug
+
+        if (!response.ok) {
+          const errorData = await response.text();
+          console.error('Erro na resposta:', errorData);
+          return;
         }
+
+        const dataResponse = await response.json();
+        alert('Jogo adicionado com sucesso!');
       } catch (error) {
-        console.error('Erro ao enviar filme:', error);
-        alert('Erro ao adicionar filme. Tente novamente.');
+        console.error('Erro ao fazer a requisição:', error);
       }
-    }
 
-    // Função de cancelamento
-    function cancel() {
-      window.location.href = '/privado.html'; // Redireciona para a página privada
-    }
+    });
 
-    // Adiciona o listener para o envio do formulário
-    document.getElementById('addMovieForm').addEventListener('submit', addMovie);
+    form.btCancelar.addEventListener('click', (e) => e.preventDefault()); // Corrigi o local do event listener de cancelar
   </script>
 </body>
 

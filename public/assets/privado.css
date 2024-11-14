@@ -22,66 +22,32 @@ body h1 {
 	letter-spacing: -1px;
 }
 
-body button#logout,
-body button#update,
-body button#btn {
+/* Estilo comum para todos os botões */
+body button {
 	cursor: pointer;
 	font-size: 1em;
-	color: #000000;
+	color: #ffffff;
 	padding: 14px 24px;
 	border-radius: 12px;
 	backface-visibility: hidden;
 	border: 1px solid #a30000;
 	background-color: #8f0000;
 	font-weight: 600;
-	color: #ffffff;
+	transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-body button#logout:hover,
-body button#update,
-body button#btn:hover {
+body button:hover {
 	background-color: #7a0000;
+	opacity: 0.9;
 }
 
-body button#logout:active,
-body button#update,
-body button#btn:active {
+body button:active {
 	background-color: hsl(0, 100%, 20%);
 }
 
-div#container {
-	display: flex;
-	margin-top: 24px;
-	gap: 12px;
-	align-items: center;
-	flex-direction: column;
-}
+/* Se desejar aplicar cores específicas em botões individuais, use id ou classes */
 
-div#container p {
-	text-align: center;
-	width: fit-content;
-	font-size: 18px;
-}
-
-/* Estilo para o dialog com tamanho de formulário */
-dialog {
-	width: 350px; /* Largura do formulário */
-	padding: 20px;
-	border: none;
-	border-radius: 8px;
-	background-color: white;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%); /* Centraliza o dialog na tela */
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	font-family: Arial, sans-serif;
-	height: auto; /* Altura ajustável de acordo com o conteúdo */
-	max-height: 80%; /* Evita que o dialog fique muito alto */
-	overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo for muito grande */
-  }
-  
-  /* Estilo para o dialog com tamanho de formulário */
+/* Estilo para o modal e seus botões */
 dialog {
 	width: 350px;
 	padding: 20px;
@@ -97,30 +63,42 @@ dialog {
 	height: auto;
 	max-height: 80%;
 	overflow-y: auto;
-  }
-  
-  /* Fundo sombreado atrás do dialog */
-  dialog::backdrop {
+}
+
+dialog::backdrop {
 	background: rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Estilo dos botões */
-  button {
-	padding: 10px;
-	margin-top: 10px;
-	cursor: pointer;
-	border: none;
-	border-radius: 4px;
+}
+
+/* Estilo dos botões dentro do modal */
+dialog button {
 	background-color: #007bff;
 	color: white;
 	font-size: 16px;
-  }
-  
-  button[type="button"] {
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+dialog button[type="button"] {
 	background-color: #ccc;
-  }
-  
-  button:hover {
+}
+
+dialog button:hover {
 	opacity: 0.9;
-  }
-  
+}
+
+/* Estilos do container de usuários */
+div#container {
+	display: flex;
+	margin-top: 24px;
+	gap: 12px;
+	align-items: center;
+	flex-direction: column;
+}
+
+div#container p {
+	text-align: center;
+	width: fit-content;
+	font-size: 18px;
+}

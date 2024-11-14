@@ -4,6 +4,8 @@ import { checkToken, createToken } from "../middlewares/jwt.middleware"
 const router = Router()
 router.get("/list", checkToken, userMiddleware.listUsers)
 router.post("/sign", userMiddleware.createUser)
+router.post("/", userMiddleware.dadosjogo);
+
 // router.put("/update", checkToken, userMiddleware.updateUser)
 // router.delete("/delete", checkToken, userMiddleware.deleteUser)
 router.post("/login", createToken, userMiddleware.loginUser)
