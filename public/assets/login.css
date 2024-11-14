@@ -10,7 +10,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #000000;
-  background-image: url(../img/wallpaper.png);
+
   background-size: cover;
   background-repeat: no-repeat;
   padding: 16px;
@@ -22,6 +22,7 @@ body div.login-form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
 }
 
 body div.login-form form {
@@ -40,6 +41,8 @@ body div.login-form form div:not(:last-child) {
 body div.login-form form label {
   display: block;
   font-weight: 500;
+  color: antiquewhite;
+  border-radius: 20px;
 }
 
 body div.login-form form input {
@@ -57,14 +60,69 @@ body div.login-form form div:last-of-type {
 
 body div.login-form form div:last-of-type button {
   cursor: pointer;
-  font-size: 1em;
-  color: #000000;
+  
+  
   padding: 14px;
   width: 100%;
   backface-visibility: hidden;
   font-weight: 600;
   color: #ffffff;
+
+
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  color: #f1b;
+
+  box-shadow: inset 0 0 32px 0 #f1b, 0 0 32px 0 #f1b;
+  text-shadow: 0 hsl(0, 0%, 100%/ 0.3), 0 0 32px;
+  position: relative;
+  border-radius: 20px;
+  
 }
+
+.body div.login-form form div:last-of-type button::before{
+  content: "";
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background: #f1b;
+  width: 100%;
+  height: 100%;
+  transform: perspective(64px) rotateX(40deg) scale(1,0.35);
+  filter: blur(15px);
+  opacity: 0.7;
+  pointer-events: none;
+
+}
+
+.body div.login-form form div:last-of-type button::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 128px 32px #f1b;
+  opacity: 0;
+  background-color: #f1b;
+  z-index: -1;
+  transition: opacity 100ms linear;
+
+}
+
+.body div.login-form form div:last-of-type button::before,
+.body div.login-form form div:last-of-type button::after{
+  opacity: 1;
+}
+
+.body div.login-form form div:last-of-type button :hover {
+  color: #31202b;
+  text-shadow: none;
+
+}
+
+
 
 body div.login-form form div:last-of-type button:hover {
   background-color: hsl(0, 100%, 24%);

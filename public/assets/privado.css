@@ -23,6 +23,7 @@ body h1 {
 }
 
 body button#logout,
+body button#update,
 body button#btn {
 	cursor: pointer;
 	font-size: 1em;
@@ -37,11 +38,13 @@ body button#btn {
 }
 
 body button#logout:hover,
+body button#update,
 body button#btn:hover {
 	background-color: #7a0000;
 }
 
 body button#logout:active,
+body button#update,
 body button#btn:active {
 	background-color: hsl(0, 100%, 20%);
 }
