@@ -3,6 +3,8 @@ import userMiddleware from "../middlewares/user.middleware"
 import { checkToken, createToken } from "../middlewares/jwt.middleware"
 const router = Router()
 router.get("/list", checkToken, userMiddleware.listUsers)
+router.get("/games/list", checkToken, userMiddleware.listjogos)
+
 router.post("/sign", userMiddleware.createUser)
 router.post("/", userMiddleware.dadosjogo);
 

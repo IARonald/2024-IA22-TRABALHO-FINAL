@@ -2,18 +2,13 @@
 <html lang="en">
 
 <head>
-  <!-- Define a codificação de caracteres para UTF-8, que cobre a maioria dos caracteres de línguas humanas -->
   <meta charset="UTF-8">
-  <!-- Define a configuração para que a página seja responsiva e ajustável conforme o tamanho da tela do dispositivo -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Título da página que aparecerá na aba do navegador -->
   <title>Privado</title>
-  <!-- Link para o arquivo CSS que define os estilos da página -->
   <link rel="stylesheet" href="assets/privado.css">
 </head>
 
 <body>
-  <!-- Título principal da página informando que a página é restrita a usuários logados -->
   <h1>Apenas usuários logados podem acessar esta página</h1>
   
   <!-- Botão para o usuário fazer logout -->
@@ -28,131 +23,147 @@
   <!-- Novo botão para adicionar um filme -->
   <button id="addMovieBtn" onclick="redirectToAddMoviePage()">Adicionar Filme</button>
 
+  <!-- Novo botão para listar jogos -->
+  <button onclick="namegame()">Carregar Jogos</button>
+
   <!-- Modal para edição de dados do usuário -->
   <dialog id="modal">
     <form method="dialog">
       <h2>Editar Dados</h2>
-      
-      <!-- Formulário de senha para o usuário confirmar antes de alterar os dados -->
       <div id="passwordForm">
-        <!-- Campo para a senha atual -->
         <label for="currentPassword">Senha Atual:</label>
         <input type="password" id="currentPassword" name="currentPassword" placeholder="Digite sua senha atual" required><br><br>
-
-        <!-- Campo para o novo email -->
+        
         <label for="newEmail">Novo Email:</label>
         <input type="email" id="newEmail" name="newEmail" placeholder="Digite o novo email" required><br><br>
 
-        <!-- Campo para a nova senha -->
         <label for="newPassword">Nova Senha:</label>
         <input type="password" id="newPassword" name="newPassword" placeholder="Digite a nova senha" required><br><br>
 
-        <!-- Botão para confirmar a alteração -->
         <button type="button" onclick="validatePassword()">Confirmar</button>
-        <!-- Botão para cancelar a edição e fechar o modal -->
         <button type="button" onclick="cancelEdit()">Cancelar</button>
       </div>
     </form>
   </dialog>
 
-  <!-- Contêiner onde a lista de usuários será exibida -->
-  <div id="container">
-    <!-- Aqui serão exibidos os dados dos usuários carregados -->
-  </div>
+  <div id="container"></div>
 
   <script>
-    // Obtém o elemento onde a lista de usuários será exibida
     const container = document.getElementById('container');
-    
+
     // Função para carregar a lista de usuários
     async function load() {
-      const url = '/user/list'; // URL para buscar a lista de usuários
-      const headers = { 'Authorization': `${localStorage.getItem('token')}` }; // Cabeçalho com token de autenticação do localStorage
-      const response = await fetch(url, { method: 'GET', headers }); // Faz uma requisição GET à API de usuários
+      const url = '/user/list';
+      const headers = { 'Authorization': `${localStorage.getItem('token')}` };
+      const response = await fetch(url, { method: 'GET', headers });
 
-      if (!response.ok) { // Se a resposta não for bem-sucedida (por exemplo, se o usuário não estiver logado)
-        alert('Você não está logado... Redirecionando para o login...'); // Exibe alerta de erro
-        return window.location = '/'; // Redireciona para a página de login
+      if (!response.ok) {
+        alert('Você não está logado... Redirecionando para o login...');
+        return window.location = '/';
       }
 
-      const dataResponse = await response.json(); // Converte a resposta para JSON
-      container.innerHTML = ''; // Limpa o conteúdo do container
-      dataResponse.forEach(e => { // Para cada usuário na lista
-        const el = document.createElement('p'); // Cria um novo elemento <p>
-        el.innerText = `ID: ${e.id}, Nome: ${e.name}, Email: ${e.email}`; // Preenche o <p> com as informações do usuário
-        container.appendChild(el); // Adiciona o <p> no container
+      const dataResponse = await response.json();
+      container.innerHTML = '';
+      dataResponse.forEach(e => {
+        const el = document.createElement('p');
+        el.innerText = `ID: ${e.id}, Nome: ${e.name}, Email: ${e.email}`;
+        container.appendChild(el);
       });
     }
 
-    // Ao clicar no botão "Carregar lista", chama a função load para carregar os dados
+     // Função para carregar a lista de jogos
+     async function namegame() {
+  const url = '/games/list'; // URL da sua API que retorna o nome do usuário e os jogos
+  const headers = { 'Authorization': `${localStorage.getItem('token')}` };
+
+  try {
+    // Enviando a requisição para a API para obter a lista de jogos
+    const response = await fetch(url, { method: 'GET', headers });
+
+    // Verificando se a resposta foi bem-sucedida
+    
+    // Convertendo a resposta para JSON
+    const dataResponse = await response.json();
+
+    // Limpando o conteúdo atual do container
+    container.innerHTML = '';
+
+    // Iterando sobre os dados e criando elementos para exibir o nome do usuário e o jogo
+    dataResponse.forEach(item => {
+      const el = document.createElement('p');
+      el.innerText = `Usuário: ${item.name}, Jogo: ${item.game_name}`;
+      container.appendChild(el); // Adicionando o elemento ao container
+    });
+  } catch (error) {
+    console.error('Erro ao carregar a lista de jogos:', error);
+    alert('Ocorreu um erro ao carregar os jogos.');
+  }
+}
+
+
     document.getElementById('btn').addEventListener('click', load);
 
-    // Função para logout
-    const logoutBtn = document.getElementById('logout'); // Obtém o botão de logout
-    logoutBtn.addEventListener('click', () => { // Quando o botão de logout é clicado
-      localStorage.clear(); // Limpa o token de autenticação armazenado no localStorage
-      window.location = '/acesso-publico.html'; // Redireciona para a página pública (login)
+    const logoutBtn = document.getElementById('logout');
+    logoutBtn.addEventListener('click', () => {
+      localStorage.clear();
+      window.location = '/acesso-publico.html';
     });
 
-    // Função para abrir o modal de edição de dados do usuário
     function openEditForm() {
-      const modal = document.getElementById('modal'); // Obtém o modal
-      modal.showModal(); // Abre o modal para edição
+      const modal = document.getElementById('modal');
+      modal.showModal();
     }
 
-    // Função para cancelar a edição e fechar o modal
     function cancelEdit() {
-      const modal = document.getElementById('modal'); // Obtém o modal
-      modal.close(); // Fecha o modal
+      const modal = document.getElementById('modal');
+      modal.close();
     }
 
-    // Função para validar a senha atual e permitir a atualização dos dados do usuário
     async function validatePassword() {
-      // Obtém os valores dos campos do formulário
       const currentPassword = document.getElementById('currentPassword').value;
       const newEmail = document.getElementById('newEmail').value;
       const newPassword = document.getElementById('newPassword').value;
 
-      const userEmail = 'joao.silva@email.com'; // Exemplo de email do usuário logado (idealmente, viria da sessão ou do JWT)
+      const userEmail = 'joao.silva@email.com';
 
-      // Envia a requisição de login para validar a senha atual
       const response = await fetch('/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail, password: currentPassword })
       });
 
-      if (!response.ok) { // Se a senha estiver incorreta
-        alert('Senha incorreta!'); // Exibe alerta de erro
+      if (!response.ok) {
+        alert('Senha incorreta!');
         return;
       }
 
-      // Se a senha for válida, prepara os dados para atualização
       const userData = {
         email: userEmail,
         newEmail: newEmail,
         password: newPassword
       };
 
-      // Envia a requisição para atualizar os dados do usuário
       const updateResponse = await fetch('/user/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       });
 
-      if (updateResponse.ok) { // Se a atualização for bem-sucedida
-        alert('Dados atualizados com sucesso!'); // Exibe mensagem de sucesso
-        cancelEdit(); // Fecha o modal
+      if (updateResponse.ok) {
+        alert('Dados atualizados com sucesso!');
+        cancelEdit();
       } else {
-        alert('Erro ao atualizar os dados.'); // Se algo deu errado, exibe mensagem de erro
+        alert('Erro ao atualizar os dados.');
       }
     }
 
-    // Função para redirecionar o usuário para a página de adicionar filme
     function redirectToAddMoviePage() {
-      window.location.href = "/adicionar-filme.html"; // Redireciona para a página de adicionar filme
+      window.location.href = "/adicionar-filme.html";
     }
+
+    // Adicionando o ouvinte de evento para o botão "Listar Jogos"
+    document.getElementById('listGamesBtn').addEventListener('click', listGames);
+
   </script>
 </body>
 

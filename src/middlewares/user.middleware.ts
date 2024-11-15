@@ -15,6 +15,30 @@ const listUsers: RequestHandler = async (req, res) => {
   res.status(200).json(users)
 }
 
+
+
+const listjogos: RequestHandler = async (req, res) => {
+  try {
+    // Estabelecendo a conexão com o banco de dados
+    const db = await connect();
+
+    // Buscando o nome do usuário e os filmes (jogos) que ele adicionou
+    const jogos = await db.all(`
+      SELECT users.name, games.nome AS game_name
+      FROM users
+      JOIN user_games ON users.id = user_games.user_id
+      JOIN games ON user_games.game_id = games.id
+    `);
+
+    // Retornando os resultados em formato JSON
+    res.status(200).json(jogos);
+  } catch (error) {
+    console.error("Erro ao buscar jogos:", error);
+    res.status(500).json({ message: "Erro ao buscar jogos" });
+  }
+};
+
+
 // Função para criar um novo usuário no banco de dados
 const createUser: RequestHandler = async (req, res) => {
   // Estabelecendo a conexão com o banco de dados
@@ -120,6 +144,7 @@ export default {
   listUsers,
   createUser,
   dadosjogo,
+  listjogos,
   updateUser,
   deleteUser,
   loginUser
