@@ -10,16 +10,16 @@
 
 <body>
   <h1>Apenas usuários logados podem acessar esta página</h1>
-  
+
   <!-- Botão para o usuário fazer logout -->
   <button id="logout">Sair</button>
-  
+
   <!-- Botão para carregar a lista de usuários -->
   <button id="btn">Carregar lista</button>
-  
+
   <!-- Botão para abrir o modal de edição de dados do usuário -->
   <button id="update" onclick="openEditForm()">Alterar</button>
-  
+
   <!-- Novo botão para adicionar um filme -->
   <button id="addMovieBtn" onclick="redirectToAddMoviePage()">Adicionar Filme</button>
 
@@ -32,8 +32,9 @@
       <h2>Editar Dados</h2>
       <div id="passwordForm">
         <label for="currentPassword">Senha Atual:</label>
-        <input type="password" id="currentPassword" name="currentPassword" placeholder="Digite sua senha atual" required><br><br>
-        
+        <input type="password" id="currentPassword" name="currentPassword" placeholder="Digite sua senha atual"
+          required><br><br>
+
         <label for="newEmail">Novo Email:</label>
         <input type="email" id="newEmail" name="newEmail" placeholder="Digite o novo email" required><br><br>
 
@@ -71,34 +72,39 @@
       });
     }
 
-     // Função para carregar a lista de jogos
-     async function namegame() {
-  const url = '/games/list'; // URL da sua API que retorna o nome do usuário e os jogos
-  const headers = { 'Authorization': `${localStorage.getItem('token')}` };
+    // Função para carregar a lista de jogos
+    async function namegame() {
+      const url = 'http://localhost:3000/games/list'; // Substitua pela base do servidor correto
+      const headers = { 'Authorization': `${localStorage.getItem('token')}` };
 
-  try {
-    // Enviando a requisição para a API para obter a lista de jogos
-    const response = await fetch(url, { method: 'GET', headers });
+      try {
+        // Enviando a requisição para a API para obter a lista de jogos
+        const response = await fetch(url, { method: 'GET', headers });
 
-    // Verificando se a resposta foi bem-sucedida
-    
-    // Convertendo a resposta para JSON
-    const dataResponse = await response.json();
+        // Verificando se a resposta foi bem-sucedida
 
-    // Limpando o conteúdo atual do container
-    container.innerHTML = '';
+        // Convertendo a resposta para JSON
+        const dataResponse = await response.json();
+        try {
+          const dataResponse = JSON.parse(text); // Tente fazer o parse manualmente
+        } catch (error) {
+          console.error('Erro ao converter resposta em JSON:', error);
+        }
 
-    // Iterando sobre os dados e criando elementos para exibir o nome do usuário e o jogo
-    dataResponse.forEach(item => {
-      const el = document.createElement('p');
-      el.innerText = `Usuário: ${item.name}, Jogo: ${item.game_name}`;
-      container.appendChild(el); // Adicionando o elemento ao container
-    });
-  } catch (error) {
-    console.error('Erro ao carregar a lista de jogos:', error);
-    alert('Ocorreu um erro ao carregar os jogos.');
-  }
-}
+        // Limpando o conteúdo atual do container
+        container.innerHTML = '';
+
+        // Iterando sobre os dados e criando elementos para exibir o nome do usuário e o jogo
+        dataResponse.forEach(item => {
+          const el = document.createElement('p');
+          el.innerText = `Usuário: ${item.name}, Jogo: ${item.game_name}`;
+          container.appendChild(el); // Adicionando o elemento ao container
+        });
+      } catch (error) {
+        console.error('Erro ao carregar a lista de jogos:', error);
+        alert('Ocorreu um erro ao carregar os jogos.');
+      }
+    }
 
 
     document.getElementById('btn').addEventListener('click', load);
